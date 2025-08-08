@@ -1,16 +1,19 @@
 package com.tienda.config;
-import org.springframework.beans.factory.annotation.Autowired;
-import jakarta.annotation.PostConstruct;
+import org.springframework.boot.context.event.ApplicationReadyEvent;
+import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 import com.tienda.services.CargaImagenService;
 
 @Component
 public class InicioImagenes {
 
-    @Autowired
-    private CargaImagenService cargaImagenService;
+    private final CargaImagenService cargaImagenService;
 
-    @PostConstruct
+    public InicioImagenes(CargaImagenService cargaImagenService) {
+        this.cargaImagenService = cargaImagenService;
+    }
+
+    @EventListener(ApplicationReadyEvent.class)
     public void init() {
         cargaImagenService.cargarImagenesDesdeCSV();
     }

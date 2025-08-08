@@ -7,7 +7,7 @@ document.getElementById('loginForm').addEventListener('submit', function(e){
   fetch('http://localhost:8080/login', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ username, password })
+    body: JSON.stringify({username, password })
   }).then(response => {
     if(response.ok){
       window.location.href = 'productos.html';

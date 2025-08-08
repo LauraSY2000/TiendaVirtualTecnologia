@@ -10,55 +10,64 @@
     .then(response => response.json())
     .then(data => {
       const contenedor = document.getElementById("productosContainer");
-data.forEach(producto => {
-  const div = document.createElement("div");
-  div.classList.add(
-    "bg-white", "rounded-2xl", "shadow-md", "p-4",
-    "flex", "flex-col", "items-center", "text-center",
-    "hover:shadow-xl", "transition"
-  );
 
-  div.innerHTML = `
-    <img src="${producto.imagen}" alt="${producto.nombre}" class="w-32 h-32 object-contain mb-4">
-    <h2 class="text-lg font-semibold text-indigo-700">${producto.nombre}</h2>
-    <p class="text-gray-700 mt-2 mb-4">$${producto.precio.toLocaleString()} COP</p>
-    <button class="bg-indigo-600 text-white px-4 py-2 rounded-full hover:bg-indigo-700 transition">Comprar</button>
-  `;
+      // Lista provisional de imágenes (mismo orden que los productos devueltos por el backend)
+      const imagenes = [
+        "img/laptop1",
+        "img/laptop1_2",
+        "img/telefonoGLS21_1"
+      ];
 
-  contenedor.appendChild(div);
-});
+      data.forEach((producto, index) => {
+        const div = document.createElement("div");
+        div.classList.add(
+          "bg-white", "rounded-2xl", "shadow-md", "p-4",
+          "flex", "flex-col", "items-center", "text-center",
+          "hover:shadow-xl", "transition"
+        );
 
-    const jsonLd = {
-  "@context": "https://schema.org",
-  "@graph": data.map(producto => ({
-    "@type": "Product",
-    "name": producto.nombre,
-    "image": producto.imagen,
-    "description": producto.descripcion || "Producto disponible en TechStore.",
-    "sku": producto.id,
-    "brand": {
-      "@type": "Brand",
-      "name": "TechStore"
-    },
-    "offers": {
-      "@type": "Offer",
-      "priceCurrency": "COP",
-      "price": producto.precio,
-      "availability": "https://schema.org/InStock"
-    }
-  }))
-};
+        div.innerHTML = `
+          <img src="${imagenes[index]}" alt="${producto.nombre}" class="w-32 h-32 object-contain mb-4">
+          <h2 class="text-lg font-semibold text-indigo-700">${producto.nombre}</h2>
+          <p class="text-gray-700 mt-2 mb-4">$${producto.precio.toLocaleString()} COP</p>
+          <button class="bg-indigo-600 text-white px-4 py-2 rounded-full hover:bg-indigo-700 transition">Comprar</button>
+        `;
 
-const script = document.createElement("script");
-script.type = "application/ld+json";
-script.textContent = JSON.stringify(jsonLd);
-document.head.appendChild(script);
-})
+        contenedor.appendChild(div);
+      });
+
+      // JSON-LD para SEO
+      const jsonLd = {
+        "@context": "https://schema.org",
+        "@graph": data.map((producto, index) => ({
+          "@type": "Product",
+          "name": producto.nombre,
+          "image": imagenes[index],
+          "description": producto.descripcion || "Producto disponible en TechStore.",
+          "sku": producto.id,
+          "brand": {
+            "@type": "Brand",
+            "name": "TechStore"
+          },
+          "offers": {
+            "@type": "Offer",
+            "priceCurrency": "COP",
+            "price": producto.precio,
+            "availability": "https://schema.org/InStock"
+          }
+        }))
+      };
+
+      const script = document.createElement("script");
+      script.type = "application/ld+json";
+      script.textContent = JSON.stringify(jsonLd);
+      document.head.appendChild(script);
+    })
     .catch(error => {
       console.error("Error al cargar productos:", error);
+      document.getElementById("error").classList.remove("hidden");
     });
-</script>
-
+  </script>
 </head>
 <body class="bg-gray-50 text-gray-800">
 
@@ -104,6 +113,4 @@ document.head.appendChild(script);
   </footer>
 
 </body>
-
-
 </html>

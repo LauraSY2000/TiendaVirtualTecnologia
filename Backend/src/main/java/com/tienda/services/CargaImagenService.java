@@ -15,6 +15,7 @@ public class CargaImagenService {
     private ImagenRepository imagenRepository;
 
     public void cargarImagenesDesdeCSV() {
+        System.out.println(">>> INICIO DE CARGA CSV <<<");
         try {
             CSVReader reader = new CSVReader(
                 new InputStreamReader(new ClassPathResource("imagenes.csv").getInputStream())
