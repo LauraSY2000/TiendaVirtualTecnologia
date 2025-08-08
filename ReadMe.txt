@@ -1,9 +1,9 @@
-# 🛒 TechStore – Tienda Online
+# TechStore – Tienda Online
 
 TechStore es una aplicación web de comercio electrónico desarrollada con arquitectura en capas, que permite la gestión y visualización de productos tecnológicos.  
 Incluye un sistema básico de autenticación para la administración y soporte para carga masiva de imágenes desde archivo CSV.  
 
-## 📌 Características Principales
+## Características Principales
 - Catálogo de productos con nombre, precio, categoría e imagen asociada.
 - Backend desarrollado en **Spring Boot** con API REST.
 - Base de datos **MySQL** con relaciones entre productos, categorías, imágenes y usuarios.
@@ -13,12 +13,12 @@ Incluye un sistema básico de autenticación para la administración y soporte p
 
 ---
 
-## 📋 Objetivos
+## Objetivos
 
-### 🎯 Objetivo General
+### Objetivo General
 Desarrollar una plataforma web que permita la gestión, almacenamiento y visualización de productos, integrando funcionalidades de autenticación y carga de imágenes.
 
-### 📌 Objetivos Específicos
+### Objetivos Específicos
 - Implementar un backend con API REST para la gestión de datos.
 - Diseñar un frontend responsive e interactivo.
 - Integrar una base de datos MySQL con relaciones entre entidades.
