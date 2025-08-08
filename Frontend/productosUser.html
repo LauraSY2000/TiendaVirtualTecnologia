@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Productos | TechStore</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+  fetch("http://localhost:8080/api/productos")
+    .then(response => response.json())
+    .then(data => {
+      const contenedor = document.getElementById("productosContainer");
+data.forEach(producto => {
+  const div = document.createElement("div");
+  div.classList.add(
+    "bg-white", "rounded-2xl", "shadow-md", "p-4",
+    "flex", "flex-col", "items-center", "text-center",
+    "hover:shadow-xl", "transition"
+  );
+
+  div.innerHTML = `
+    <img src="${producto.imagen}" alt="${producto.nombre}" class="w-32 h-32 object-contain mb-4">
+    <h2 class="text-lg font-semibold text-indigo-700">${producto.nombre}</h2>
+    <p class="text-gray-700 mt-2 mb-4">$${producto.precio.toLocaleString()} COP</p>
+    <button class="bg-indigo-600 text-white px-4 py-2 rounded-full hover:bg-indigo-700 transition">Comprar</button>
+  `;
+
+  contenedor.appendChild(div);
+});
+
+    const jsonLd = {
+  "@context": "https://schema.org",
+  "@graph": data.map(producto => ({
+    "@type": "Product",
+    "name": producto.nombre,
+    "image": producto.imagen,
+    "description": producto.descripcion || "Producto disponible en TechStore.",
+    "sku": producto.id,
+    "brand": {
+      "@type": "Brand",
+      "name": "TechStore"
+    },
+    "offers": {
+      "@type": "Offer",
+      "priceCurrency": "COP",
+      "price": producto.precio,
+      "availability": "https://schema.org/InStock"
+    }
+  }))
+};
+
+const script = document.createElement("script");
+script.type = "application/ld+json";
+script.textContent = JSON.stringify(jsonLd);
+document.head.appendChild(script);
+})
+    .catch(error => {
+      console.error("Error al cargar productos:", error);
+    });
+</script>
+
+</head>
+<body class="bg-gray-50 text-gray-800">
+
+  <!-- NAVBAR -->
+  <nav class="bg-gradient-to-r from-indigo-600 to-blue-500 px-6 py-4 flex items-center justify-between shadow-md">
+    <div class="flex items-center space-x-2">
+      <img src="img/logo.svg" alt="Logo" class="w-10 h-auto">
+      <span class="text-white text-xl font-bold">TechStore</span>
+    </div>
+    <div class="hidden md:flex space-x-6">
+      <a href="inicio.html" class="text-white hover:underline">Inicio</a>
+      <a href="productos.html" class="text-white hover:underline">Productos</a>
+      <a href="#" class="text-white hover:underline">Contacto</a>
+    </div>
+  </nav>
+
+  <!-- TÍTULO -->
+  <header class="text-center py-10">
+    <h1 class="text-3xl font-bold text-indigo-700">Nuestros productos</h1>
+    <p class="text-gray-600 mt-2">Explora nuestra variedad de artículos tecnológicos</p>
+  </header>
+
+  <!-- SECCIÓN DE PRODUCTOS -->
+  <main class="max-w-6xl mx-auto px-4 pb-16">
+    <div id="productosContainer" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+      <!-- Aquí se insertarán los productos -->
+    </div>
+
+    <!-- Spinner de carga -->
+    <div id="loader" class="text-center text-indigo-600 mt-10 hidden">
+      <p>Cargando productos...</p>
+    </div>
+
+    <!-- Mensaje de error -->
+    <div id="error" class="text-center text-red-600 mt-6 hidden">
+      <p>Ocurrió un error al cargar los productos.</p>
+    </div>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="bg-indigo-600 text-white py-6 text-center">
+    <p>&copy; 2025 TechStore. Todos los derechos reservados.</p>
+  </footer>
+
+</body>
+
+
+</html>
